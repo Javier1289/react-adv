@@ -18,11 +18,6 @@ export const ShoppingPage = () => {
                 flexDirection:'row',
                 flexWrap:'wrap'
             }}>
-                {/* <ProductCard product = { product }>
-                    <ProductCard.Image />
-                    <ProductCard.Title title=""/>
-                </ProductCard> */}
-
                 <ProductCard product = { product }>
                     <ProductCard.Image img = './coffee-mug.png'/>
                     <ProductCard.Title title="Coffee"/>
