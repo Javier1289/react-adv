@@ -1,36 +1,12 @@
-import React, { useState, ChangeEvent } from 'react'
-import { useForm } from '../hooks/useForm';
+import React from 'react'
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 
 import '../styles/styles.css';
+import * as Yup from 'yup';
+import { MyTextInput } from '../components';
 
 export const RegisterPage = () => {
     
-    const { 
-        formData, 
-        onChange,
-        resetForm,
-        isValidEmail,
-        name,
-        email,
-        password1,
-        password2,
-     } = useForm({
-        name:'',
-        email:'',
-        password1:'',
-        password2:'',
-    })
-  
-
-    
-
-    const onSubmit = ( event: React.FormEvent<HTMLFormElement>) => {
-        
-        event.preventDefault();
-        
-        console.log( formData );
-
-    }
 
 
     return (
@@ -38,55 +14,75 @@ export const RegisterPage = () => {
         <div>
 
             <h1>RegisterPage</h1>
-            
-            <form noValidate onSubmit={ onSubmit }>
-            
-                <input 
-                    type="text" 
-                    name = 'name'  
-                    placeholder='Name'  
-                    value={ name }  
-                    onChange = { onChange }
-                    className = { `${ name.trim().length <= 0 && 'has-error' }` }
-                 />
-                { name.trim().length <= 0  && <span>Este campo es necesario</span>}
+
+
+            <Formik 
                 
-                <input 
-                    type="email" 
-                    name = 'email'  
-                    placeholder='Email'  
-                    value={ email }  
-                    onChange = { onChange } 
-                />
-                { !isValidEmail( email )  && <span>Email no es válido</span>}
+                initialValues = {{
+                    name: '',
+                    email: '',
+                    password1: '',
+                    password2: '',
+                }}
 
-                <input 
-                    type="password" 
-                    name = 'password1'  
-                    placeholder='Password'  
-                    value={ password1 }  
-                    onChange = { onChange } 
-                />
-                { password1.trim().length <= 0 && <span> Este campo es necesario </span> }
-                { password1.trim().length < 6 && password1.trim().length > 0 && <span> La contraseña debe tener 6 caracteres </span> }
+                onSubmit = { values => {
+                    console.log( values )
+                }}
 
+                validationSchema = { 
+                    Yup.object({
+                        name: Yup.string()
+                                        .min(2,'Must be 2 characters or more')
+                                        .max(15, 'Must be 15 characters or less')
+                                        .required(),
+                        email: Yup.string().email().required(),
+                        password1: Yup.string()
+                                        .min(6,'Must be 6 characters or more')
+                                        .required(),
+                        password2: Yup.string()
+                                        .min(6,'Must be 6 characters or more')
+                                        .oneOf([Yup.ref('password1')], 'Password1 and password2 must be equals')
+                                        .required(),
+                    })      
+                }
 
-                <input 
-                    type="password" 
-                    name = 'password2'  
-                    placeholder='Repeat Password'  
-                    value={ password2 }  
-                    onChange = { onChange } 
-                />
-                { password2.trim().length <= 0 && <span> Este campo es necesario </span> }
-                { password2.trim().length > 0 && password1 !== password2 && <span> Las contraseñas deben ser iguales </span> }
+            >
+                {
+                     ({ handleReset }) => (
+                        <Form  noValidate >
 
-                <button type='submit'>Create</button>
-                <button onClick={ resetForm }>Reset</button>
+                            <MyTextInput 
+                                label={'Name'} 
+                                name={'name'}
+                                placeholder="Name"
+                            />
+                            <MyTextInput 
+                                label={'Email'} 
+                                name={'email'}
+                                placeholder="Email"
+                            />
+                            <MyTextInput 
+                                label={'Password'} 
+                                name={'password1'}
+                                placeholder="Password"
+                                type="password"
+                            />
+                            <MyTextInput 
+                                label={'Repeat Password'} 
+                                name={'password2'}
+                                placeholder="Repeat Password"
+                                type="password"
+                            />
+
+                            <button type='submit'>Create</button>
+                            <button type ='button' onClick={ handleReset }>Reset</button>
+                            
+                        </Form>
+                     )
+                }
+
+            </Formik>
             
-            </form>
-
-
         </div>
     
     )

@@ -1,0 +1,68 @@
+[
+    {
+        "type": "input",
+        "name": "firstName",
+        "placeholder": "Homer",
+        "label": "First Name",
+        "value": "",
+        "validations": [
+            {
+                "type": "required"
+            },
+            {
+                "type": "minLength",
+                "value": 5
+            }
+        ]
+    },
+    {
+        "type": "input",
+        "name": "lastName",
+        "placeholder": "Simpson",
+        "label": "Last Name",
+        "value": "",
+        "validations": [
+            {
+                "type": "required"
+            }
+        ]
+    },
+    {
+        "type": "email",
+        "name": "email",
+        "placeholder": "homer@springfield.com",
+        "label": "Email",
+        "value": "",
+        "validations": [
+            {
+                "type": "required"
+            },
+            {
+                "type": "email"
+            }
+        ]
+    },
+    {
+        "type": "select",
+        "name": "favoriteGame",
+        "label": "Favorite Game",
+        "value": "",
+        "options": [{
+            "id": 1,
+            "label": "bowling"
+        },
+        {
+            "id": 2,
+            "label": "billiards"
+        },
+        {
+            "id": 3,
+            "label": "football"
+        }],
+        "validations": [
+            {
+                "type": "required"
+            }
+        ]
+    }
+]
